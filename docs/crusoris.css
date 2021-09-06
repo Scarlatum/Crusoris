@@ -1,0 +1,40 @@
+.cursor-container {
+
+  --cursor-size: 30px;
+  --color:#ffffff;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0px;
+  height: 0px;
+}
+
+.cursor {
+
+  pointer-events: none;
+  position: absolute;
+
+  width: var(--cursor-size);
+  aspect-ratio: 1/1;
+
+  border: 3px solid var(--color);
+  border-radius: 100%;
+
+  transition: 333ms;
+  transition-timing-function: ease-out;
+
+}
+
+.cursor-dot {
+  
+  pointer-events: none;
+  position: absolute;
+
+  width: 8px;
+  aspect-ratio: 1/1;
+
+  background: var(--color);
+
+  border-radius: 400px;
+}
