@@ -1,0 +1,21 @@
+{
+  "name": "cursor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "tsc --watch",
+    "build": "tsc --outdir build",
+    "terser": "terser --compress --ecma 6 --module --mangle --mangle-props reserved=['init'] --source-map -o build/cursor.min.js -- build/cursor.js",
+    "prod-build": "npm run build && npm run terser"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@node-minify/core": "^6.2.0"
+  },
+  "dependencies": {
+    "@node-minify/terser": "^6.2.0"
+  }
+}
