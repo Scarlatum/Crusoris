@@ -1,6 +1,6 @@
 {
   "name": "@eccheuma/crusoris",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Simple custom cursor",
   "main": "build/cursor.js",
   "type": "module",
