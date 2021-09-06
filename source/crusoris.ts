@@ -72,7 +72,9 @@ export default class Cursor {
     this.#transformTicker();
 
     window.addEventListener('mousemove', ({ clientY, clientX }) => this.#shiftCursor(clientX, clientY));
-    window.addEventListener('click', () => this.#actionCursor())
+    window.addEventListener('mousedown', () => this.#holdCursor(true));
+    window.addEventListener('mouseup', () => this.#holdCursor(false));
+    window.addEventListener('click', () => this.#clickCursor())
 
   }
 
@@ -83,13 +85,19 @@ export default class Cursor {
 
   }
 
-  #actionCursor() {
+  #clickCursor() {
 
     this.cursorTransform.scale = 'scale(0)'
 
     setTimeout(() => {
       this.cursorTransform.scale = 'scale(1)'
     }, this.cssProperties.transDur)
+
+  }
+
+  #holdCursor(hold: boolean) {
+
+    this.cursorTransform.scale = `scale(${ hold ? 2 : 1 })`
 
   }
 

@@ -1,7 +1,10 @@
+body {
+  cursor: none;
+}
+
 .cursor-container {
 
-  --cursor-size: 30px;
-  --color:#ffffff;
+  --cursor-size: 15px;
 
   position: fixed;
   top: 0;
@@ -18,10 +21,10 @@
   width: var(--cursor-size);
   aspect-ratio: 1/1;
 
-  border: 3px solid var(--color);
+  border: 2px solid #363330;
   border-radius: 100%;
 
-  transition: 333ms;
+  transition: 250ms;
   transition-timing-function: ease-out;
 
 }
@@ -31,10 +34,10 @@
   pointer-events: none;
   position: absolute;
 
-  width: 8px;
+  width: 4px;
   aspect-ratio: 1/1;
 
-  background: var(--color);
+  background: #ab9987;
 
   border-radius: 400px;
 }

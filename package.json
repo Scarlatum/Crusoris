@@ -1,8 +1,8 @@
 {
-  "name": "cursor",
+  "name": "@eccheuma/crusoris",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Simple custom cursor",
+  "main": "build/cursor.js",
   "type": "module",
   "scripts": {
     "dev": "tsc --watch",
@@ -12,10 +12,7 @@
   },
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "@node-minify/core": "^6.2.0"
-  },
-  "dependencies": {
-    "@node-minify/terser": "^6.2.0"
-  }
+  "homepage": "https://github.com/Scarlatum/eccheuma-crusoris",
+  "devDependencies": {},
+  "dependencies": {}
 }

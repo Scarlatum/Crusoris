@@ -1,3 +1,3 @@
-import Cursor from "./crusoris.min.js";
+import Cursor from "./crusoris.js";
 
 new Cursor(document.getElementById('app')).init();
