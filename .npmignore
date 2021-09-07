@@ -3,5 +3,7 @@ source
 
 .gitignore
 
+node_modules
+
 tsconfig.json
 LICENSE
