@@ -1,3 +1,5 @@
 docs
 LICENSE
 tsconfig.json
+
+.npmignore
