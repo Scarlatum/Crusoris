@@ -8,7 +8,8 @@
     "dev": "tsc --watch",
     "build": "tsc --outdir dist",
     "terser": "terser --compress --ecma 6 --module --mangle --mangle-props reserved=['init'] --source-map -o dist/index.min.js -- dist/index.js",
-    "prod-build": "npm run build && npm run terser"
+    "prod-build": "npm run build && npm run terser",
+    "publish": "npm publish --access public"
   },
   "author": "",
   "license": "ISC",
