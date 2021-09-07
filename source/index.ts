@@ -2,7 +2,7 @@ export default class Cursor {
   
   private rootDOM:      HTMLElement;
   private container:    HTMLElement;
-  private customCursor: HTMLElement;
+  private tail:         HTMLElement;
   private dot:          HTMLElement;
 
   private cssProperties = {
@@ -17,23 +17,26 @@ export default class Cursor {
   private idle = {
     hash: 0,
     status: true,
-    timeout: 1000,
+    timeout: 3000,
   }
   
-  private cursorTransform: {[ index: string ]: string } = {
+  private tailTransform: {[ index: string ]: string } = {
     translate: '',
     scale: '',
+    var: 'var(--crusoris-tail-transform, rotate(45deg))',
   };
+
   private dotTransform: {[ index: string ]: string } = {
     translate: '',
     scale: '',
+    var: 'var(--crusoris-dot-transform, rotate(0deg))',
   };
 
   constructor(target: HTMLElement) {
     
-    const customCursor = document.createElement('i');
-          customCursor.id = 'crusoris-circle'
-          customCursor.style.setProperty('opacity', String(this.cssProperties.opacity))
+    const tail = document.createElement('i');
+          tail.id = 'crusoris-tail'
+          tail.style.setProperty('opacity', String(this.cssProperties.opacity))
         
     const dot = document.createElement('i')
           dot.id = 'crusoris-dot'
@@ -42,7 +45,7 @@ export default class Cursor {
           container.id = "crusoris"
 
     this.container    = container
-    this.customCursor = customCursor;
+    this.tail         = tail;
     this.dot          = dot;
     this.rootDOM      = target;
 
@@ -52,21 +55,23 @@ export default class Cursor {
 
     this.idleReset()
 
-    this.dot!
-      .style.setProperty('transform', Object.keys(this.dotTransform).reduce((prev, cur) => {
-        return `${ this.dotTransform[prev] } ${ this.dotTransform[cur] }`
-      }));
+    const styleValue = this.collectValues(this.dotTransform);
+
+    requestAnimationFrame(() => {
+      this.dot!.style.setProperty('transform', styleValue)
+    })
 
   }
 
-  set circleTransformationHash(key: number) {
+  set tailTransformationHash(key: number) {
 
     this.idleReset()
 
-    this.customCursor!
-      .style.setProperty('transform', Object.keys(this.cursorTransform).reduce((prev, cur) => {
-        return `${ this.cursorTransform[prev] } ${ this.cursorTransform[cur] }`
-      }));
+    const styleValue = this.collectValues(this.tailTransform);
+
+    requestAnimationFrame(() => {
+      this.tail!.style.setProperty('transform', styleValue)
+    })
 
   }
 
@@ -74,7 +79,7 @@ export default class Cursor {
 
     this.idle.status = value;
 
-    this.customCursor.style.setProperty('opacity', String(Number(!value)))
+    this.tail.style.setProperty('opacity', String(Number(!value)))
 
   }
 
@@ -82,7 +87,7 @@ export default class Cursor {
     
     this.rootDOM.prepend(this.container);
 
-    this.container.prepend(this.customCursor);
+    this.container.prepend(this.tail);
     this.container.prepend(this.dot);
 
     this.getSizes();
@@ -91,7 +96,7 @@ export default class Cursor {
 
   private getSizes() {
 
-    const { width, borderWidth, transitionDuration } = window.getComputedStyle(this.customCursor!);
+    const { width, borderWidth, transitionDuration } = window.getComputedStyle(this.tail!);
     
       this.cssProperties.transDur       = parseFloat(transitionDuration) * 1000;
       this.cssProperties.cursorBorder   = parseFloat(borderWidth);
@@ -111,13 +116,19 @@ export default class Cursor {
     window.addEventListener('mousemove', ({ clientY, clientX }) => {
       this.shiftCursor(clientX, clientY)
     });
+
+    window.addEventListener('mouseout', () => this.hideCursor(true));
+    window.addEventListener('mouseover', () => this.hideCursor(false));
+
     window.addEventListener('mousedown', () => this.holdCursor(true));
     window.addEventListener('mouseup', () => this.holdCursor(false));
     window.addEventListener('click', () => this.clickCursor());
 
+    window.addEventListener('mousemove', () => this.hideCursor(false), { once: true })
+
     setInterval(async () => {
 
-      this.idleStatus = this.idle.hash === await this.idleChecker(); console.log(this.idle.status)
+      this.idleStatus = this.idle.hash === await this.idleChecker();
 
     }, this.idle.timeout / 2)
 
@@ -127,32 +138,36 @@ export default class Cursor {
 
     const changeHash = Math.random();
     
-    this.cursorTransform.translate  = `translate(${ x - this.cssProperties.cursorCenter }px, ${ y - this.cssProperties.cursorCenter }px)`;
-    this.dotTransform.translate     = `translate(${ x - this.cssProperties.dotHalf }px, ${ y - this.cssProperties.dotHalf }px)`;
+    this.tailTransform.translate  = `translate(${ x - this.cssProperties.cursorCenter }px, ${ y - this.cssProperties.cursorCenter }px)`;
+    this.dotTransform.translate   = `translate(${ x - this.cssProperties.dotHalf }px, ${ y - this.cssProperties.dotHalf }px)`;
 
-    this.circleTransformationHash  = changeHash;
-    this.dotTransformationHash     = changeHash;
+    this.tailTransformationHash   = changeHash;
+    this.dotTransformationHash    = changeHash;
 
   }
 
   private clickCursor() {
 
-    this.cursorTransform.scale = 'scale(0)';
+    this.tailTransform.scale = 'scale(0)';
 
-    this.circleTransformationHash = Math.random();
+    this.tailTransformationHash = Math.random();
 
     setTimeout(() => {
-      this.cursorTransform.scale = 'scale(1)'; 
-      this.circleTransformationHash = Math.random();
+      this.tailTransform.scale = 'scale(1)'; 
+      this.tailTransformationHash = Math.random();
     }, this.cssProperties.transDur);
 
   }
 
   private holdCursor(hold: boolean) {
 
-    this.cursorTransform.scale    = `scale(${ hold ? 2 : 1 })`;
-    this.circleTransformationHash  = Math.random();
+    this.tailTransform.scale     = `scale(${ hold ? 2 : 1 })`;
+    this.tailTransformationHash  = Math.random();
 
+  }
+
+  private hideCursor(value: boolean) {
+    this.container.style.setProperty('opacity', String(Number(!value)));
   }
 
   private async idleChecker(): Promise<number> {
@@ -168,6 +183,10 @@ export default class Cursor {
     this.idleStatus = false;
     this.idle.hash  = Math.random();
 
+  }
+
+  private collectValues(obj: {[ index: string ]: string }) {
+    return Object.values(obj).reduce((prev, cur) => `${ prev } ${ cur }`)
   }
 
 }
