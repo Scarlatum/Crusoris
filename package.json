@@ -1,19 +1,23 @@
 {
-  "name": "@eccheuma/crusoris",
-  "version": "1.0.8",
+  "name": "eccheuma-crusoris",
+  "private": true,
+  "version": "1.0.9",
   "description": "Simple custom cursor",
-  "main": "dist/index.min.js",
-  "type": "module",
+  "files": ["lib"],
+  "main": "./lib/crusoris.es.js",
+  "exports": {
+    ".": {
+      "import": "./lib/crusoris.es.js"
+    }
+  },
   "scripts": {
-    "dev": "tsc --watch",
-    "build": "tsc --outdir dist",
-    "terser": "terser --compress --ecma 6 --module --mangle --mangle-props reserved=['init'] --source-map -o dist/index.min.js -- dist/index.js",
-    "prod-build": "npm run build && npm run terser",
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
     "publish": "npm publish --access public"
   },
-  "author": "",
-  "license": "ISC",
-  "homepage": "https://github.com/Scarlatum/eccheuma-crusoris",
-  "devDependencies": {},
-  "dependencies": {}
+  "devDependencies": {
+    "typescript": "^4.5.4",
+    "vite": "^2.8.0"
+  }
 }

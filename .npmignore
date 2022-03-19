@@ -3,6 +3,9 @@ source
 
 .gitignore
 
+*.svg
+*.html
+
 node_modules
 
 tsconfig.json
