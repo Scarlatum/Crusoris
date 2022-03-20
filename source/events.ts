@@ -17,9 +17,12 @@ export namespace events {
 
     cursor.newStatus = cursorStatus.click;
 
-    // ! Тут должно быть больше кода
+    // ...
 
     cursor.newStatus = cursorStatus.await;
+
+    // setTimeout(() => {
+    // }, 1000)
 
   }
 

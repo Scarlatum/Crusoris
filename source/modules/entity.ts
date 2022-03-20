@@ -1,4 +1,5 @@
 import { Cursor, Position } from '~/index';
+import { cursorStatus } from '~/status';
 
 interface IEntity {
   element: HTMLElement,
@@ -7,6 +8,12 @@ interface IEntity {
 interface Transforms {
   rotate: number,
   scale: number
+}
+
+export enum Actions {
+  revert,
+  hide,
+  interaction,
 }
 
 export abstract class Entity implements IEntity {
@@ -36,7 +43,21 @@ export abstract class Entity implements IEntity {
       this.pos = cursor.position
     })
 
+    this.element.addEventListener('status', () => {
+
+      switch (cursor.status) {
+        case cursorStatus.click: 
+          this.setAction(Actions.interaction); break;
+        case cursorStatus.idle: 
+          this.setAction(Actions.hide); break;
+        case cursorStatus.move:
+          this.setAction(Actions.revert); break;
+      }
+
+    })
+
   }
+
 
   set size(value: number,) {
     this.element.style.setProperty('--size', `${ value }px`); this._size = value;
@@ -57,8 +78,8 @@ export abstract class Entity implements IEntity {
     }
   }
 
-
   abstract get anchor(): number;
+  abstract setAction(act: Actions): void;
 
   updateProperty() {
     this.element.style.setProperty('--y', `${ this.pos.y }px`);

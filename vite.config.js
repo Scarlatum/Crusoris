@@ -16,6 +16,11 @@ export default defineConfig({
 			fileName: (format) => `crusoris.${format}.js`
 		},
 	},
+	css: {
+		modules: {
+			generateScopedName: (name) => `crusoris-${ name }`
+		}
+	},
 	resolve: {
 		alias: {
 			'~': path.resolve(__dirname, './source')

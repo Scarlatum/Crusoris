@@ -4,6 +4,8 @@ import { events } from '~/events';
 import { Dot } from '~/modules/dot';
 import { Tail } from './modules/tail';
 
+import { styles } from '~/style';
+
 // const enum DEFAULTS {
 //   DOT_SIZE = 10,
 //   TAIL_SIZE = 20,
@@ -34,19 +36,26 @@ export class Cursor extends HTMLElement {
   }
 
   public customEvents = {
-    position: new Event('position'),
-    status: new Event('status'),
+    position  : new Event('position'),
+    status    : new Event('status'),
   }
 
   public status: cursorStatus = cursorStatus.idle;
 
   constructor() { super();
 
+    const shadow = this.attachShadow({ mode: 'closed' });
+
+    const componentStyles = document.createElement('style');
+          componentStyles.textContent = String(styles)
+          .replaceAll(new RegExp('\\s{2,}','g'), String())
+
     this.dot  = new Dot(this);
     this.tail = new Tail(this);
 
-    this.append(this.dot.element);
-    this.append(this.tail.element);
+    shadow.append(componentStyles);
+    shadow.append(this.dot.element);
+    shadow.append(this.tail.element);
 
     this.listeners.click = (e) => events.click(e, this);
     this.listeners.mousemove  = (e) => events.mousemove(e, this);
@@ -91,7 +100,7 @@ export class Cursor extends HTMLElement {
 
       this.idleChecker(this.position);
 
-    }, 1000)
+    }, 3000)
   }
 
   connectedCallback() {
@@ -112,13 +121,13 @@ export class Cursor extends HTMLElement {
 
     switch (key) {
       case ComponentAttributes.dotSize:
-        this.dot.size = parseInt(newValue); break;
+        this.dot.size   = parseInt(newValue); break;
       case ComponentAttributes.tailSize:
-        this.tail.size = parseInt(newValue); break;
+        this.tail.size  = parseInt(newValue); break;
     }
 
   }
 
 }
 
-window.customElements.define('eccheuma-cursor', Cursor);
+window.customElements.define('eccheuma-crusoris', Cursor);
