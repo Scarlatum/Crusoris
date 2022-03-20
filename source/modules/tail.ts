@@ -1,46 +1,53 @@
-// import styles from '~/css/main.module.css';
-import { Actions, Entity } from '~/modules/entity'
+import { Entity, IParams } from '~/entity';
 import { Cursor } from '~/index';
 
+import { Status } from '~/utils';
 
-// ! SET GLOBAL TIMEOUT VARIABLE
-const ANIMATION_TIME = 250;
+interface ITail extends IParams {
+}
 
-export class Tail extends Entity {
+export class Tail extends Entity implements ITail {
 
-  private border: number = 2;
+  public static readonly className: string = 'eccheuma-cursor-tail';
 
-  constructor(cursor: Cursor) { super(cursor)
+  constructor(instance: Cursor) { super(instance);
+    this.element.className = Tail.className;
+  }
 
-    this.element.className = 'tail';
+  set newScale(value: number) {
+    this.transforms.scale = value; this.update();
+  }
+
+  private AWAIT_ANIMATION() {
+
+    this.instance.status = Status.await
+
+    setTimeout(() => {
+      this.instance.status = Status.active;
+    }, 250)
 
   }
 
-  get anchor() {
-    return (this._size / 2) + this.border
+  public clickAnimation() { this.AWAIT_ANIMATION();
+
+    this.element.style.opacity = '0';
+    this.newScale = 2;
+
   }
 
-  setAction(act: Actions) {
+  public hideAnimation() {
+    this.newScale = 0;
+  }
 
-    const actions: Record<keyof typeof Actions, () => void> = {
-      hide: () => {
-        this.scale = 0;
-      },
-      revert: () => {
-        this.scale = 1;
-      },
-      interaction: () => {
+  public appearAnimation(status: Status) {
 
-        this.scale = 2; 
-        setTimeout(() => actions.revert(), 250);
+    this.element.style.opacity = '1';
 
-      },
+    switch (status) {
+      case Status.active: this.newScale = 1; break;
+      case Status.idle: this.newScale = 1; break;
     }
-
-    const key = Actions[act] as keyof typeof Actions;
-
-    actions[key]()
-
+  
   }
 
 }

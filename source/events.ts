@@ -1,43 +1,28 @@
-import type { Cursor } from '~/index';
-import { cursorStatus } from '~/status';
+import { Cursor } from '.';
+import { Status } from './utils';
 
 export namespace events {
 
-  const enum errorAlias {
-    define
+  type CB = Array<() => void>;
+
+  export function mousemove(event: MouseEvent, instance: Cursor, cb: CB) {
+
+    instance.position = {
+      x: event.clientX,
+      y: event.clientY,
+    }
+
+    cb.forEach(f => f());
+
   }
 
-  const errors: {[A in keyof typeof errorAlias]: Error } = {
-    define: new Error('Cursor is not defined')
-  }
-
-  export function click(_ev: MouseEvent, cursor?: Cursor) {
-
-    if ( !cursor ) throw errors.define;
-
-    cursor.newStatus = cursorStatus.click;
+  export function click(_event: MouseEvent, instance: Cursor, cb: CB) {
 
     // ...
 
-    cursor.newStatus = cursorStatus.await;
+    instance.status = Status.active;
 
-    // setTimeout(() => {
-    // }, 1000)
-
-  }
-
-  export function mousemove(event: MouseEvent, cursor?: Cursor) {
-
-    if ( !cursor ) throw errors.define;
-
-    cursor.newStatus = cursorStatus.move;
-
-    cursor.newPosition = {
-      x: event.clientX,
-      y: event.clientY,
-    };
-
-    cursor.newStatus = cursorStatus.await;
+    cb.forEach(f => f());
 
   }
 

@@ -1,28 +1,15 @@
-// import styles from '~/css/main.module.css';
-import { Actions, Entity } from '~/modules/entity'
-import { Cursor } from '~/index';
+import { Entity, IParams } from '~/entity';
+import type { Cursor } from '~/index';
 
-export class Dot extends Entity {
+interface IDot extends IParams {
+}
 
-  constructor(cursor: Cursor) { super(cursor)
-    this.element.className = 'dot';
-  }
+export class Dot extends Entity implements IDot {
 
-  get anchor() {
-    return (this._size / 2);
-  }
+  private static readonly className: string = 'eccheuma-cursor-dot';
 
-  setAction(act: Actions): void {
-
-    // switch (act) {
-    //   case Actions.hide:
-    //     this.scale = 2;
-    //     break;
-    //   case Actions.revert:
-    //     this.scale = 1;
-    //     break;
-    // }
-
+  constructor(instance: Cursor) { super(instance);
+    this.element.className = Dot.className;
   }
 
 }
