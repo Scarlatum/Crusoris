@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
+    <title>Crusoris element</title>
     <style>
       body {
         margin: 0;
@@ -19,12 +19,16 @@
         font-size: 21px;
         border-bottom: 1px solid white;
         overflow: hidden;
+
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
       }
     </style>
   </head>
   <body>
-    <eccheuma-crusoris tail-size="30" dot-size="4" rotate="45" duration="120"></eccheuma-crusoris>
-    <script type="module" src="./source/index.ts"></script>
-    <!-- <script src="./lib/crusoris.es.js" type="module"></script> -->
+    <eccheuma-crusoris tail-size="30" dot-size="4" rotate="45" duration="120" action="false"></eccheuma-crusoris>
+    <h1>CRUSORIS</h1>
+    <!-- <script type="module" src="./source/index.ts"></script> -->
+    <script src="./lib/crusoris.es.js" type="module"></script>
   </body>
 </html>

@@ -1,5 +1,5 @@
-import { Cursor } from '.';
-import { Status } from './utils';
+import { Cursor } from '~/index';
+// import { Status } from './utils';
 
 export namespace events {
 
@@ -16,11 +16,9 @@ export namespace events {
 
   }
 
-  export function click(_event: MouseEvent, instance: Cursor, cb: CB) {
+  export function click(_event: MouseEvent, _instance: Cursor, cb: CB) {
 
     // ...
-
-    instance.status = Status.active;
 
     cb.forEach(f => f());
 

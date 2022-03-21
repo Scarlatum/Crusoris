@@ -1,20 +1,27 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
+    "target": "ES6",
     "useDefineForClassFields": true,
     "module": "ESNext",
     "lib": ["ESNext", "DOM", "ES2020"],
-    "moduleResolution": "Node",
+    "moduleResolution": "classic",
     "strict": true,
     "sourceMap": true,
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "noEmit": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "experimentalDecorators": true,
+    "declaration": true,
+    // "emitDeclarationOnly": true,
+    "alwaysStrict": true,
+    "preserveConstEnums": true,
+    "removeComments": true,
+    "composite": true,
+    "pretty": true,
+    "incremental": true,
+    "diagnostics": true,
     "baseUrl": ".",
+    "outDir": "./typescript",
     "paths": {
       "~/*": ["source/*"]
     }

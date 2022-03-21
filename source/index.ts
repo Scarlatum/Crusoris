@@ -28,7 +28,6 @@ const STYLES = css`
   .eccheuma-cursor-tail {
 
     --size: 40px;
-    --color: #FFFFFF;
     --duration: 250ms;
 
     display: block;
@@ -37,8 +36,8 @@ const STYLES = css`
     left: 0px;
     height: var(--size);
     width: var(--size);
-    border-radius: 10px;
-    border: 2px solid var(--color);
+    border-radius: calc(var(--size) / 3);
+    border: 2px solid var(--crusoris-color-tail, #FFFFFF);
     z-index: 1;
     transition-duration: var(--duration);
     transition-timing-function: ease-out;
@@ -49,7 +48,6 @@ const STYLES = css`
   .eccheuma-cursor-dot {
 
     --size: 10px;
-    --color: #FFFFFF;
     --dur: 250ms;
 
     display: block;
@@ -58,10 +56,12 @@ const STYLES = css`
     left: 0px;
     height: var(--size);
     width: var(--size);
-    background: var(--color);
+    background: var(--crusoris-color-dot, #FFFFFF);
+    border: 2px solid var(--crusoris-color-accent, #AAAAAA);
     border-radius: 100%;
     z-index: 2;
     margin: calc((var(--size) / 2) * -1) calc((var(--size) / 2) * -1);
+    box-sizing: border-box;
 
   }
 
@@ -71,12 +71,15 @@ enum ComponentAttributes {
   dotSize = 'dot-size',
   tailSize = 'tail-size',
   rotate = 'rotate',
-  duration = 'duration'
+  duration = 'duration',
+  action = 'action'
 }
 
 export class Cursor extends HTMLElement {
 
-  public shadowRoot: ShadowRoot;
+  public static readonly ITER_TIMEOUT = 750;
+
+  public root: ShadowRoot | HTMLElement = this;
   public position: ElementPosition = {
     x: window.innerWidth / 2,
     y: window.innerHeight / 2,
@@ -86,21 +89,31 @@ export class Cursor extends HTMLElement {
   public tailInstance: Tail;
 
   public status: Status = Status.idle;
+  public action: boolean = false;
 
   constructor() { super();
 
-    this.shadowRoot = this.attachShadow({ mode: 'closed' });
+    this.root = this.attachShadow({ mode: 'open' });
+
+    Array.from(this.children).forEach(elem => {
+      this.root.append(elem)
+    })
 
     const DOMStyle = document.createElement('style');
-          DOMStyle.textContent = STYLES;
+          DOMStyle.textContent = STYLES
+            .replaceAll(new RegExp('\\s{2,}', 'g'), String());
 
-    this.shadowRoot.append(DOMStyle);
+    this.root.append(DOMStyle);
 
     this.tailInstance = new Tail(this);
     this.dotInstance  = new Dot(this);
 
-    this.shadowRoot.append(this.dotInstance.element);
-    this.shadowRoot.append(this.tailInstance.element);
+    this.root.append(this.dotInstance.element);
+    this.root.append(this.tailInstance.element);
+
+    // setInterval(() => {
+    //   this.setAttribute('action', this.action ? 'false' : 'true');
+    // }, 3000)
     
   }
 
@@ -110,6 +123,7 @@ export class Cursor extends HTMLElement {
       ComponentAttributes.tailSize,
       ComponentAttributes.rotate,
       ComponentAttributes.duration,
+      ComponentAttributes.action,
     ]
   }
 
@@ -128,23 +142,36 @@ export class Cursor extends HTMLElement {
   }
 
   private notify() {
+
     [ this.dotInstance, this.tailInstance ].forEach((instance) => {
       instance.update();
     })
   }
 
   private idleChecker(pos: ElementPosition) {
+
+    this.newStatus = this.status !== Status.await
+      && pos.x === this.position.x 
+      && pos.y === this.position.y
+      ? Status.idle
+      : this.status
+
     setTimeout(() => {
-
-      this.newStatus = pos.x === this.position.x 
-        && pos.y === this.position.y 
-        && this.status !== Status.await
-        ? Status.idle
-        : Status.active
-
       this.idleChecker(this.position);
+    }, Cursor.ITER_TIMEOUT);
 
-    }, 1000)
+  }
+
+  private setAciton(value: string, prev: string) {
+
+    if ( !prev ) return;
+
+    this.action = value === 'true' || value === 'false'
+      ? JSON.parse(value)
+      : this.action;
+
+    this.dotInstance.activeAnimation(this.action);
+
   }
 
   connectedCallback() {
@@ -152,44 +179,67 @@ export class Cursor extends HTMLElement {
     document.body.style.cursor = 'none';
 
     document.body.addEventListener('mousemove', (event) => {
-      events.mousemove(event, this, Array(0)); this.notify()
+
+      this.newStatus = Status.active
+
+      events.mousemove(event, this, Array(0)); 
+      
+      this.notify();
+
     })
 
     document.body.addEventListener('mousedown', (event) => {
+
+      this.newStatus = Status.await;
+
       events.click(event, this, [
         () => this.tailInstance.clickAnimation(),
       ])
+
     })
 
     document.body.addEventListener('mouseup', (event) => {
+
+      this.newStatus = Status.active;
+
       events.click(event, this, [
         () => this.tailInstance.appearAnimation(this.status)
       ])
+
     })
 
     this.idleChecker(this.position);
 
   }
 
-  attributeChangedCallback(key: ComponentAttributes, _oldValue: string, newValue: string) {
+  attributeChangedCallback(key: ComponentAttributes, oldValue: string, newValue: string) {
 
     const DT = this.dotInstance.transforms;
     const TT = this.tailInstance.transforms;
     
     switch (key) {
+
+      case ComponentAttributes.action: this.setAciton(newValue, oldValue); break
+
+      case ComponentAttributes.duration: 
+        DT.duration = TT.duration = parseInt(newValue);
+        break;
+
       case ComponentAttributes.dotSize:
         DT.size = parseInt(newValue);
         break;
+
       case ComponentAttributes.tailSize:
         TT.size = parseInt(newValue);
         break;
+
       case ComponentAttributes.rotate:
         TT.rotate = parseInt(newValue);
         break;
-      case ComponentAttributes.duration: {
-        DT.duration = TT.duration = parseInt(newValue);
-      }; break;
+      
     }
+
+    this.notify();
 
   }
 

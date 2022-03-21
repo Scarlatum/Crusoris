@@ -1,7 +1,7 @@
 {
   "name": "@eccheuma/crusoris",
   "private": false,
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Simple custom cursor",
   "files": [
     "lib"
@@ -9,12 +9,13 @@
   "main": "./lib/crusoris.es.js",
   "exports": {
     ".": {
-      "import": "./lib/crusoris.es.js"
+      "import": "./lib/crusoris.es.js",
+      "require": "./lib/crusiris.cjs.js"
     }
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "publish": "npm update && npm publish --access public"
   },

@@ -1,1 +1,7 @@
-import * as lib from '@eccheuma/crusoris';
+import { Cursor } from './lib/crusoris.es';
+import './lib/index';
+
+const MyCursor = class extends Cursor {
+  
+}
+

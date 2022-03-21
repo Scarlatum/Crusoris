@@ -12,4 +12,21 @@ export class Dot extends Entity implements IDot {
     this.element.className = Dot.className;
   }
 
+  public activeAnimation(status: boolean): void {
+
+    this.element.getAnimations().forEach(anim => anim.cancel());
+
+    this.element.animate([
+      { transform: 'scale(1)' },
+      { transform: 'scale(2)' },
+    ], {
+      duration: this.transforms.duration,
+      composite: 'accumulate',
+      iterations: status ? Infinity : 2,
+      direction: 'alternate',
+      fill: 'both'
+    })
+
+  }
+
 }

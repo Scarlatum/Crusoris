@@ -20,7 +20,6 @@ export abstract class Entity implements EntityStruct {
 
   public element: HTMLElement;
 
-
   public transforms = {
     size: 4,
     scale: 1,
