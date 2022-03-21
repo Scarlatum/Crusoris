@@ -1,1 +1,0 @@
-{"bundle":{"commonSourceDirectory":"..","sourceFiles":["../source/events.ts","../source/modules/dot.ts","../source/utils.ts","../source/modules/tail.ts","../source/index.ts","../source/entity.ts"],"js":{"sections":[{"pos":0,"end":13173,"kind":"text"}]},"dts":{"sections":[{"pos":0,"end":3241,"kind":"text"}]}},"version":"4.5.5"}
