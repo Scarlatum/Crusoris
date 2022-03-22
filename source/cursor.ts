@@ -1,70 +1,32 @@
 import { events } from '~/events';
 
+// UTILS
+import { utils } from '~/utils';
+
+// STYLES
+import styles from '~/styles'
+
 // ELEMENTS
-import { Dot } from '~/modules/dot';
+import { Transforms } from '~/entity'
+import { Dot  } from '~/modules/dot';
 import { Tail } from '~/modules/tail';
 
-import { css, Status } from '~/utils';
+type Instances = {
+  dot: Dot,
+  tail: Tail,
+}
 
 export type ElementPosition = {
   x: number,
   y: number,
 }
 
-// STYLES
-const STYLES = css`
+export const enum Status {
+  idle,
+  active,
+  await
+}
 
-  :host {
-    pointer-events: none;
-    position: fixed;
-    height: 0;
-    width: 0;
-    top: 0;
-    left: 0; 
-    z-index: 10000; 
-  }
-
-  .eccheuma-cursor-tail {
-
-    --size: 40px;
-    --duration: 250ms;
-
-    display: block;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    height: var(--size);
-    width: var(--size);
-    border-radius: calc(var(--size) / 3);
-    border: 2px solid var(--crusoris-color-tail, #FFFFFF);
-    z-index: 1;
-    transition-duration: var(--duration);
-    transition-timing-function: ease-out;
-    margin: calc((var(--size) / 2) * -1) calc((var(--size) / 2) * -1);
-    box-sizing: border-box;
-  }
-
-  .eccheuma-cursor-dot {
-
-    --size: 10px;
-    --dur: 250ms;
-
-    display: block;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    height: var(--size);
-    width: var(--size);
-    background: var(--crusoris-color-dot, #FFFFFF);
-    border: 2px solid var(--crusoris-color-accent, #AAAAAA);
-    border-radius: 100%;
-    z-index: 2;
-    margin: calc((var(--size) / 2) * -1) calc((var(--size) / 2) * -1);
-    box-sizing: border-box;
-
-  }
-
-`
 
 export enum ComponentAttributes {
   dotSize = 'dot-size',
@@ -83,8 +45,7 @@ export class Cursor extends HTMLElement {
     y: window.innerHeight / 2,
   }
 
-  public dotInstance: Dot;
-  public tailInstance: Tail;
+  public instances: Instances = Object();
 
   public root: ShadowRoot;
 
@@ -95,15 +56,14 @@ export class Cursor extends HTMLElement {
 
     this.root = this.attachShadow({ mode: 'open' });
 
-    this.tailInstance = new Tail(this);
-    this.dotInstance  = new Dot(this);
+    this.instances.dot  = new Dot(this);
+    this.instances.tail = new Tail(this);
 
-    this.root.append(this.dotInstance.element);
-    this.root.append(this.tailInstance.element);
+    this.root.append(this.instances.dot.element);
+    this.root.append(this.instances.tail.element);
 
     const ElementStyle = document.createElement('style');
-          ElementStyle.textContent = STYLES
-            .replaceAll(new RegExp('\\s{2,}', 'g'), String());
+          ElementStyle.textContent = styles
 
     this.root.append(ElementStyle);
     
@@ -127,17 +87,18 @@ export class Cursor extends HTMLElement {
 
     // ? TAIL REACTIONS
     switch (value) {
-      case Status.active: this.tailInstance.appearAnimation(this.status); break;
-      case Status.idle: this.tailInstance.hideAnimation(); break;
+      case Status.active: this.instances.tail.appearAnimation(); break;
+      case Status.idle: this.instances.tail.hideAnimation(); break;
     }
 
   }
 
   private notify() {
 
-    [ this.dotInstance, this.tailInstance ].forEach((instance) => {
+    Object.values(this.instances).forEach(instance => {
       instance.update();
     })
+
   }
 
   private idleChecker(pos: ElementPosition) {
@@ -154,7 +115,7 @@ export class Cursor extends HTMLElement {
 
   }
 
-  private setAciton(value: string, prev: string) {
+  private setContext(value: string, prev: string) {
 
     if ( !prev ) return;
 
@@ -162,7 +123,7 @@ export class Cursor extends HTMLElement {
       ? JSON.parse(value)
       : this.action;
 
-    this.dotInstance.activeAnimation(this.action);
+    this.instances.dot.contextAnimation();
 
   }
 
@@ -183,7 +144,7 @@ export class Cursor extends HTMLElement {
       this.newStatus = Status.await;
 
       events.click(event, this, [
-        () => this.tailInstance.clickAnimation(),
+        () => this.instances.tail.clickAnimation(),
       ])
 
     })
@@ -193,7 +154,7 @@ export class Cursor extends HTMLElement {
       this.newStatus = Status.active;
 
       events.click(event, this, [
-        () => this.tailInstance.appearAnimation(this.status)
+        () => this.instances.tail.appearAnimation()
       ])
 
     })
@@ -204,27 +165,27 @@ export class Cursor extends HTMLElement {
 
   attributeChangedCallback(key: ComponentAttributes, oldValue: string, newValue: string) {
 
-    const DT = this.dotInstance.transforms;
-    const TT = this.tailInstance.transforms;
+    const DT: Transforms = this.instances.dot.transforms;
+    const TT: Transforms = this.instances.tail.transforms;
     
     switch (key) {
 
-      case ComponentAttributes.action: this.setAciton(newValue, oldValue); break
+      case ComponentAttributes.action: this.setContext(newValue, oldValue); break
 
       case ComponentAttributes.duration: 
-        DT.duration = TT.duration = parseInt(newValue);
+        DT.duration = TT.duration = parseInt(newValue) as utils.measurements.ms;
         break;
 
       case ComponentAttributes.dotSize:
-        DT.size = parseInt(newValue);
+        DT.size = parseInt(newValue) as utils.measurements.px;
         break;
 
       case ComponentAttributes.tailSize:
-        TT.size = parseInt(newValue);
+        TT.size = parseInt(newValue) as utils.measurements.px;
         break;
 
       case ComponentAttributes.rotate:
-        TT.rotate = parseInt(newValue);
+        TT.rotate = parseInt(newValue) as utils.measurements.deg;
         break;
       
     }

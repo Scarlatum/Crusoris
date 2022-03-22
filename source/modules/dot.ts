@@ -1,22 +1,25 @@
-import { Entity, IParams } from '~/entity';
+import { Entity, AnimationFunction } from '~/entity';
 import type { Cursor } from '~/cursor';
+import { utils } from '~/utils';
 
-interface IDot extends IParams {
+interface IDot {
+  contextAnimation  : AnimationFunction;
 }
 
 export class Dot extends Entity implements IDot {
 
-  static DEFAULT_SIZE = 6;
+  public static readonly DEFAULT_SIZE = 6 as utils.measurements.px;
+  public static readonly CLASS_NAME: string = 'eccheuma-cursor-dot';
 
-  private static readonly className: string = 'eccheuma-cursor-dot';
+  constructor(instance: Cursor) { 
+    
+    super(instance);
 
-  constructor(instance: Cursor) { super(instance);
-
-    this.element.className = Dot.className;
+    this.element.className = Dot.CLASS_NAME;
 
   }
 
-  public activeAnimation(status: boolean): void {
+  public contextAnimation() {
 
     this.element.getAnimations().forEach(anim => anim.cancel());
 
@@ -26,11 +29,10 @@ export class Dot extends Entity implements IDot {
     ], {
       duration: this.transforms.duration,
       composite: 'accumulate',
-      iterations: status ? Infinity : 2,
+      iterations: this.instance.status ? Infinity : 2,
       direction: 'alternate',
       fill: 'both'
     })
 
   }
-
 }

@@ -1,30 +1,31 @@
 import type { ElementPosition, Cursor } from '~/cursor';
+import { utils } from '~/utils';
 
-export interface IParams {
-  // className: string;
+export type AnimationFunction = () => void;
+
+export interface Transforms {
+  size: utils.measurements.px;
+  scale: utils.measurements.float;
+  rotate: utils.measurements.deg;
+  duration: utils.measurements.ms;
 }
 
-interface EntityStruct {
-
-  transforms: {
-    size: number;
-    scale: number;
-    rotate: number;
-  }
-
+interface IEntity {
+  transforms: Transforms
+  element: HTMLElement
 }
 
-export abstract class Entity implements EntityStruct {
+export abstract class Entity implements IEntity {
 
   protected instance: Cursor;
 
   public element: HTMLElement;
 
-  public transforms = {
-    size: 10,
-    scale: 1,
-    rotate: 0,
-    duration: 250,
+  public transforms: Transforms = {
+    size    : 10  as utils.measurements.px,
+    scale   : 1.0 as utils.measurements.float,
+    rotate  : 0   as utils.measurements.deg,
+    duration: 250 as utils.measurements.ms,
   }
 
   constructor(instance: Cursor) {

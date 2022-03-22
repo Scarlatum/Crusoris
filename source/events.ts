@@ -16,7 +16,7 @@ export namespace events {
 
   }
 
-  export function click(_event: MouseEvent, _instance: Cursor, cb: CB) {
+  export function click(event: MouseEvent, instance: Cursor, cb: CB) {
 
     // ...
 

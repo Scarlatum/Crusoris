@@ -1,32 +1,36 @@
-import { Entity, IParams } from '~/entity';
-import { Cursor } from '~/cursor';
+import { Entity, AnimationFunction } from '~/entity';
+import { Cursor, Status } from '~/cursor';
+import { utils } from '~/utils';
 
-import { Status } from '~/utils';
-
-interface ITail extends IParams {
+interface ITail {
+  clickAnimation  : AnimationFunction;
+  hideAnimation   : AnimationFunction;
+  appearAnimation : AnimationFunction;
 }
 
 export class Tail extends Entity implements ITail {
 
-  static DEFAULT_SIZE = 30;
+  public static readonly DEFAULT_SIZE = 30 as utils.measurements.px;
+  public static readonly CLASS_NAME: string = 'eccheuma-cursor-tail';
 
-  public static readonly className: string = 'eccheuma-cursor-tail';
+  constructor(instance: Cursor) { 
+    
+    super(instance);
 
-  constructor(instance: Cursor) { super(instance);
-
-    this.element.className = Tail.className;
+    this.element.className = Tail.CLASS_NAME;
 
   }
 
-  set newScale(value: number) {
+  set newScale(value: utils.measurements.float) {
     this.transforms.scale = value; this.update();
   }
+
 
   public clickAnimation() {
 
     this.element.style.opacity = '1';
 
-    this.newScale = 2;
+    this.newScale = 2.0 as utils.measurements.float;
 
   }
 
@@ -34,19 +38,19 @@ export class Tail extends Entity implements ITail {
 
     this.element.style.opacity = '.25';
 
-    this.newScale = .75;
+    this.newScale = 0.75 as utils.measurements.float;
 
   }
 
-  public appearAnimation(status: Status) {
+  public appearAnimation() {
 
     this.element.style.opacity = '1';
 
-    switch (status) {
+    switch (this.instance.status) {
       case Status.active: 
-        this.newScale = 1; break;
+        this.newScale = 1.0 as utils.measurements.float; break;
       case Status.idle: 
-        this.newScale = 0; break;
+        this.newScale = 0.0 as utils.measurements.float; break;
     }
   
   }
