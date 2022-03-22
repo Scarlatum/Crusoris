@@ -1,5 +1,5 @@
 import { Entity, IParams } from '~/entity';
-import { Cursor } from '~/index';
+import { Cursor } from '~/cursor';
 
 import { Status } from '~/utils';
 
@@ -8,10 +8,14 @@ interface ITail extends IParams {
 
 export class Tail extends Entity implements ITail {
 
+  static DEFAULT_SIZE = 30;
+
   public static readonly className: string = 'eccheuma-cursor-tail';
 
   constructor(instance: Cursor) { super(instance);
+
     this.element.className = Tail.className;
+
   }
 
   set newScale(value: number) {

@@ -1,15 +1,19 @@
 import { Entity, IParams } from '~/entity';
-import type { Cursor } from '~/index';
+import type { Cursor } from '~/cursor';
 
 interface IDot extends IParams {
 }
 
 export class Dot extends Entity implements IDot {
 
+  static DEFAULT_SIZE = 6;
+
   private static readonly className: string = 'eccheuma-cursor-dot';
 
   constructor(instance: Cursor) { super(instance);
+
     this.element.className = Dot.className;
+
   }
 
   public activeAnimation(status: boolean): void {

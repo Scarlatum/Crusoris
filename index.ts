@@ -1,7 +1,3 @@
-import { Cursor } from './lib/crusoris.es';
-import './lib/index';
+import Cursoris from './source/index';
 
-const MyCursor = class extends Cursor {
-  
-}
-
+Cursoris({ dist: true, styles: true });

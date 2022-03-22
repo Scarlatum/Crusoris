@@ -1,4 +1,4 @@
-import type { ElementPosition, Cursor } from '~/index';
+import type { ElementPosition, Cursor } from '~/cursor';
 
 export interface IParams {
   // className: string;
@@ -21,7 +21,7 @@ export abstract class Entity implements EntityStruct {
   public element: HTMLElement;
 
   public transforms = {
-    size: 4,
+    size: 10,
     scale: 1,
     rotate: 0,
     duration: 250,

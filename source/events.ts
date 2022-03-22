@@ -1,4 +1,4 @@
-import { Cursor } from '~/index';
+import { Cursor } from '~/cursor';
 // import { Status } from './utils';
 
 export namespace events {

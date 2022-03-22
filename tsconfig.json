@@ -1,27 +1,30 @@
 {
   "compilerOptions": {
-    "target": "ES6",
-    "useDefineForClassFields": true,
-    "module": "ESNext",
+
+    "target": "ES2020",
+    "module": "ES2015",
     "lib": ["ESNext", "DOM", "ES2020"],
     "moduleResolution": "classic",
-    "strict": true,
-    "sourceMap": true,
+    
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "experimentalDecorators": true,
-    "declaration": true,
-    // "emitDeclarationOnly": true,
+    
+    "strict": true,
     "alwaysStrict": true,
+    "noImplicitAny": false,
+    "noImplicitReturns": true,
+    "useDefineForClassFields": true,
+    
+    "experimentalDecorators": true,
     "preserveConstEnums": true,
     "removeComments": true,
-    "composite": true,
-    "pretty": true,
-    "incremental": true,
-    "diagnostics": true,
+    
+    "sourceMap": true,
+    "declaration": true,
+    "declarationDir": "./lib/types",
+
     "baseUrl": ".",
-    "outDir": "./typescript",
+    "rootDir": "source",
     "paths": {
       "~/*": ["source/*"]
     }
@@ -29,4 +32,7 @@
   "include": [
     "source"
   ],
+  "exclude": [
+    "index.ts"
+  ]
 }
