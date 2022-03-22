@@ -1,13 +1,13 @@
 {
   "name": "@eccheuma/crusoris",
   "private": false,
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Simple custom cursor",
   "files": [
     "lib"
   ],
-  "main": "./lib/crusoris.es.js",
-  "types": "./lib/index.d.ts",
+  "main": "lib/crusoris.es.js",
+  "types": "lib/types",
   "exports": {
     ".": {
       "import": "./lib/crusoris.es.js",
