@@ -27,10 +27,14 @@
     </style>
   </head>
   <body>
-    <!-- <eccheuma-crusoris tail-size="30" dot-size="4" rotate="45" duration="120" action="false"></eccheuma-crusoris> -->
+    <eccheuma-crusoris tail-size="30" dot-size="4" rotate="45" duration="120" action="false"></eccheuma-crusoris>
     <h1 style="cursor: pointer;">CRUSORIS</h1>
-    <script type="module" src="./index.ts"></script>
-    <!-- <script src="./lib/crusoris.es.js" type="module"></script> -->
-    <!-- <script src="./tsc/index.js"></script> -->
+    <script type="module">
+
+      import init from "./lib/crusoris.es.js";
+
+      init({ styles: true, dist: true });
+
+    </script>
   </body>
 </html>

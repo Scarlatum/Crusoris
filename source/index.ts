@@ -39,6 +39,9 @@ export default function init(options: ICursoris) {
   customElements.define(TAG, Cursor);
 
 	if ( options.styles ) innerFucntions.setStyles()
+
+	if ( document.getElementsByTagName(TAG).length ) return;
+
 	if ( options.dist ) innerFucntions.setElement()
 
 }

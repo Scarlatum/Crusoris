@@ -4,7 +4,7 @@
     "target": "ES2020",
     "module": "ES2015",
     "lib": ["ESNext", "DOM", "ES2020"],
-    "moduleResolution": "classic",
+    "moduleResolution": "Classic",
     
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -21,10 +21,12 @@
     
     "sourceMap": true,
     "declaration": true,
-    "declarationDir": "./lib/types",
-
+    "declarationDir": "lib/types",
+    "emitDeclarationOnly": true,
+    
     "baseUrl": ".",
     "rootDir": "source",
+    "outDir": "test",
     "paths": {
       "~/*": ["source/*"]
     }
@@ -33,6 +35,6 @@
     "source"
   ],
   "exclude": [
-    "index.ts"
+    "index.ts",
   ]
 }
