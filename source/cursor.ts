@@ -41,8 +41,8 @@ export class Cursor extends HTMLElement {
   public static readonly ITER_TIMEOUT = 750;
 
   public position: ElementPosition = {
-    x: utils.toNominal(window.innerHeight / 2, utils.nominals.px),
-    y: utils.toNominal(window.innerHeight / 2, utils.nominals.px),
+    x: window.innerHeight / 2,
+    y: window.innerHeight / 2,
   }
 
   public instances: Instances = Object();
