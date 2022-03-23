@@ -5,7 +5,7 @@ export type AnimationFunction = () => void;
 
 export interface Transforms {
   size: utils.measurements.px;
-  scale: utils.measurements.float;
+  scale: number;
   rotate: utils.measurements.deg;
   duration: utils.measurements.ms;
 }
@@ -22,10 +22,10 @@ export abstract class Entity implements IEntity {
   public element: HTMLElement;
 
   public transforms: Transforms = {
-    size    : 10  as utils.measurements.px,
-    scale   : 1.0 as utils.measurements.float,
-    rotate  : 0   as utils.measurements.deg,
-    duration: 250 as utils.measurements.ms,
+    size    : utils.toNominal(10, utils.nominals.px),
+    scale   : 1.0,
+    rotate  : utils.toNominal(0, utils.nominals.deg),
+    duration: utils.toNominal(250, utils.nominals.ms),
   }
 
   constructor(instance: Cursor) {
@@ -51,13 +51,17 @@ export abstract class Entity implements IEntity {
 
   private setStyles() {
 
-    const TRANSLATE: string = `translate(${ this.position.x }px, ${ this.position.y }px)`;
-    const SCALE: string     = `scale(${ this.transforms.scale })`
-    const ROTATE: string    = `rotate(${ this.transforms.rotate }deg)`;
+    const TRANSLATE: string = `translate(
+      ${ utils.toNominal(this.position.x, utils.nominals.px) }, 
+      ${ utils.toNominal(this.position.y, utils.nominals.px) }
+    )`;
 
-    this.element.style.setProperty('transform', `${ TRANSLATE } ${ ROTATE } ${ SCALE }`);
-    this.element.style.setProperty('--size', `${ this.transforms.size }px`);
-    this.element.style.setProperty('--duration', `${ this.transforms.duration }ms`);
+    const SCALE: string     = `scale(${ this.transforms.scale })`;
+    const ROTATE: string    = `rotate(${ this.transforms.rotate })`;
+
+    this.element.style.setProperty('transform', `${ TRANSLATE } ${ SCALE } ${ ROTATE }`);
+    this.element.style.setProperty('--size', `${ this.transforms.size }`);
+    this.element.style.setProperty('--duration', `${ this.transforms.duration }`);
 
   }
 

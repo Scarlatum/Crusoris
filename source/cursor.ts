@@ -41,8 +41,8 @@ export class Cursor extends HTMLElement {
   public static readonly ITER_TIMEOUT = 750;
 
   public position: ElementPosition = {
-    x: window.innerWidth / 2,
-    y: window.innerHeight / 2,
+    x: utils.toNominal(window.innerHeight / 2, utils.nominals.px),
+    y: utils.toNominal(window.innerHeight / 2, utils.nominals.px),
   }
 
   public instances: Instances = Object();
@@ -167,25 +167,27 @@ export class Cursor extends HTMLElement {
 
     const DT: Transforms = this.instances.dot.transforms;
     const TT: Transforms = this.instances.tail.transforms;
+
+    const value = parseInt(newValue);
     
     switch (key) {
 
       case ComponentAttributes.action: this.setContext(newValue, oldValue); break
 
       case ComponentAttributes.duration: 
-        DT.duration = TT.duration = parseInt(newValue) as utils.measurements.ms;
+        DT.duration = TT.duration = utils.toNominal(value, utils.nominals.ms);
         break;
 
       case ComponentAttributes.dotSize:
-        DT.size = parseInt(newValue) as utils.measurements.px;
+        DT.size = utils.toNominal(value, utils.nominals.px);
         break;
 
       case ComponentAttributes.tailSize:
-        TT.size = parseInt(newValue) as utils.measurements.px;
+        TT.size = utils.toNominal(value, utils.nominals.px);
         break;
 
       case ComponentAttributes.rotate:
-        TT.rotate = parseInt(newValue) as utils.measurements.deg;
+        TT.rotate = utils.toNominal(value, utils.nominals.deg);
         break;
       
     }

@@ -1,7 +1,7 @@
 {
   "name": "@eccheuma/crusoris",
   "private": false,
-  "version": "1.1.14",
+  "version": "1.1.16",
   "description": "Simple custom cursor",
   "files": [
     "lib",
@@ -9,6 +9,7 @@
   ],
   "main": "lib/crusoris.es.js",
   "types": "lib/types",
+  "type": "module",
   "exports": {
     ".": {
       "import": "./lib/crusoris.es.js",
@@ -18,14 +19,18 @@
   "repository": "https://github.com/Scarlatum/eccheuma-crusoris",
   "homepage": "https://eccheuma.vercel.app",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build && tsc && tsc-alias",
+    "vite:dev": "vite",
+    "vite:build": "vite build && tsc && tsc-alias",
+    "vite:preview": "vite preview",
+    "test:watch": "vitest --watch --config vitest.config.ts",
+    "test:run": "vitest --config vitest.config.ts",
     "ts:compile": "tsc && tsc-alias",
-    "preview": "vite preview",
-    "publish": "npm publish --access public"
+    "npm:publish": "npm publish --access public"
   },
   "devDependencies": {
+    "@types/node": "^17.0.22",
     "tsc-alias": "^1.6.4",
+    "typescript": "^4.6.2",
     "vite": "^2.8.0",
     "vitest": "^0.7.7"
   }

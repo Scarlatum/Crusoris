@@ -8,7 +8,7 @@ interface IDot {
 
 export class Dot extends Entity implements IDot {
 
-  public static readonly DEFAULT_SIZE = 6 as utils.measurements.px;
+  public static readonly DEFAULT_SIZE = utils.toNominal(6, utils.nominals.px);
   public static readonly CLASS_NAME: string = 'eccheuma-cursor-dot';
 
   constructor(instance: Cursor) { 

@@ -1,14 +1,10 @@
 import path from 'path';
+import { fileURLToPath } from 'url';
 import { defineConfig } from 'vite';
 
-// import typescript2 from "rollup-plugin-typescript2"
+const DIR = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
-	// plugins: [{
-	// 	...typescript2({
-	// 		useTsconfigDeclarationDir: true
-	// 	}), apply: 'build'
-	// }],
 	server: {
 		host: '0.0.0.0',
 	},
@@ -18,7 +14,7 @@ export default defineConfig({
 		outDir: 'lib',
 		minify: 'terser',
 		lib: {
-			entry: path.resolve(__dirname, 'source/index.ts'),
+			entry: path.resolve(DIR, 'source/index.ts'),
 			name: 'eccheuma-crusoris',
 			formats: ['es', 'cjs'],
 			fileName: (format) => `crusoris.${format}.js`
@@ -46,7 +42,7 @@ export default defineConfig({
 	},
 	resolve: {
 		alias: {
-			'~': path.resolve(__dirname, './source')
+			'~': path.resolve(DIR, './source')
 		}
 	},
 })

@@ -10,7 +10,7 @@ interface ITail {
 
 export class Tail extends Entity implements ITail {
 
-  public static readonly DEFAULT_SIZE = 30 as utils.measurements.px;
+  public static readonly DEFAULT_SIZE = utils.toNominal(30, utils.nominals.px);;
   public static readonly CLASS_NAME: string = 'eccheuma-cursor-tail';
 
   constructor(instance: Cursor) { 
@@ -21,7 +21,7 @@ export class Tail extends Entity implements ITail {
 
   }
 
-  set newScale(value: utils.measurements.float) {
+  set newScale(value: number) {
     this.transforms.scale = value; this.update();
   }
 
@@ -30,7 +30,7 @@ export class Tail extends Entity implements ITail {
 
     this.element.style.opacity = '1';
 
-    this.newScale = 2.0 as utils.measurements.float;
+    this.newScale = 2.0;
 
   }
 
@@ -38,7 +38,7 @@ export class Tail extends Entity implements ITail {
 
     this.element.style.opacity = '.25';
 
-    this.newScale = 0.75 as utils.measurements.float;
+    this.newScale = 0.75;
 
   }
 
@@ -48,9 +48,9 @@ export class Tail extends Entity implements ITail {
 
     switch (this.instance.status) {
       case Status.active: 
-        this.newScale = 1.0 as utils.measurements.float; break;
+        this.newScale = 1.0; break;
       case Status.idle: 
-        this.newScale = 0.0 as utils.measurements.float; break;
+        this.newScale = 0.0; break;
     }
   
   }

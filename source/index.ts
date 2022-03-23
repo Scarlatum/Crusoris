@@ -29,12 +29,12 @@ namespace innerFucntions {
 
 }
 
-interface ICursoris {
+interface ICrusoris {
 	dist: boolean
 	styles: boolean
 }
 
-export default function init(options: ICursoris) {
+export default function init(options: ICrusoris) {
 
   customElements.define(TAG, Cursor);
 

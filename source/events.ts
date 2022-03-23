@@ -1,11 +1,11 @@
 import { Cursor } from '~/cursor';
-// import { Status } from './utils';
 
 export namespace events {
 
   type CB = Array<() => void>;
 
   export function mousemove(event: MouseEvent, instance: Cursor, cb: CB) {
+
 
     instance.position = {
       x: event.clientX,
