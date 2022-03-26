@@ -1,3 +1,6 @@
+![image](https://github.com/Scarlatum/crusoris/blob/main/HEAD.png?raw=true)
+
+---
 
 ### Описание:
 
