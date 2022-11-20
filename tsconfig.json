@@ -35,10 +35,6 @@
       "~/*": ["source/*"]
     },
 
-    "types": [
-      "@types/node"
-    ]
-
   },
   "exclude": [
     "lib",
