@@ -25,6 +25,7 @@
     "test:watch": "vitest --watch --config vitest.config.ts",
     "test:run": "vitest --config vitest.config.ts",
     "ts:compile": "tsc && tsc-alias",
+    "install::build": "npm install && npm run vite:build",
     "npm:publish": "npm publish --access public"
   },
   "devDependencies": {
