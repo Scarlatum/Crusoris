@@ -34,7 +34,9 @@
     "paths": {
       "~/*": ["source/*"]
     },
-
+    "types": [
+      "vue/types",
+    ]
   },
   "exclude": [
     "lib",

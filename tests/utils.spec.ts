@@ -6,6 +6,6 @@ describe('utils', () => {
 
   test('utils::nominal', () => {
     expect(utils.toNominal(10, utils.nominals.px)).toBe('10px');
-  })
+  });
 
-})
+});
